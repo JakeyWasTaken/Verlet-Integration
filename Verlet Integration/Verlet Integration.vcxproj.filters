@@ -127,6 +127,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\Rendering\Shader\shaderparams.txt" />
+    <Text Include="src\Rendering\Shader\shaderparams.md" />
   </ItemGroup>
 </Project>

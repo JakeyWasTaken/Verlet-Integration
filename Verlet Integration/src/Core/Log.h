@@ -17,7 +17,7 @@ namespace Verlet
 	};
 }
 
-#if VT_DEBUG
+#if VT_DEBUG || VT_RELEASE
 
 // Verlet log macros
 #define VT_FATAL(...)		::Verlet::Log::GetLogger()->critical(__VA_ARGS__)
@@ -26,7 +26,7 @@ namespace Verlet
 #define VT_INFO(...)		::Verlet::Log::GetLogger()->info(__VA_ARGS__)
 #define VT_TRACE(...)		::Verlet::Log::GetLogger()->trace(__VA_ARGS__)
 
-#else // VT_RELEASE
+#else // VT_DIST
 
 //  Verlet log macros
 #define VT_FATAL

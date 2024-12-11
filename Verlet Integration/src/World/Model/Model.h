@@ -15,7 +15,7 @@ namespace Verlet
 	class Model
 	{
 	public:
-		Model(const char* filePath, Shader* pShader, bool isStatic);
+		Model(const char* filePath, Shader* pShader, bool isStatic, uint32_t meshFlags = 0);
 		~Model();
 
 		void Draw(glm::mat4 transform, glm::vec3 color, Camera* camera);
@@ -24,11 +24,13 @@ namespace Verlet
 		inline Shader* GetShader() { return m_shader; };
 		inline std::vector<Texture*>* GetLoadedTextures() { return &m_loadedTextures; };
 		inline bool IsStatic() { return m_isStatic; };
+		inline uint32_t GetMeshFlags() { return m_meshFlags; };
 
 		inline void AddMesh(Mesh* mesh) { m_meshes.push_back(mesh); };
 
 	private:
 		uint32_t m_id = GetNextModelIndex();
+		uint32_t m_meshFlags = 0;
 		bool m_isStatic;
 
 		std::vector<Mesh*> m_meshes;

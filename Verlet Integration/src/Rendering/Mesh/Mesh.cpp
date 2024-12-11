@@ -11,16 +11,19 @@
 
 namespace Verlet
 {
-	Mesh::Mesh(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, Material* material, bool isStatic, uint32_t modifiers)
+	Mesh::Mesh(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, Material* material, bool isStatic, uint32_t flags)
 	{
 		m_vertices = vertices;
 		m_indices = indices;
 
 		m_material = material;
 
-		m_modifiers = modifiers;
+		m_flags = flags;
 		
 		SetStatic(isStatic);
+		SolveMeshSize();
+
+		VT_INFO("Mesh size: {0}, {1}, {2}", m_size.x, m_size.y, m_size.z);
 
 		// I have to do this otherwise it shouts at me
 		m_VAO = NULL;
@@ -61,6 +64,21 @@ namespace Verlet
 			MeshVertex vertex = m_vertices[index];
 			vertex.Normal = glm::normalize(vertex.Normal);
 		}
+	}
+
+	void Mesh::SolveMeshSize()
+	{
+		glm::vec3 min = glm::vec3(FLT_MAX);
+		glm::vec3 max = glm::vec3(-FLT_MAX);
+
+		for (uint32_t i = 0; i < m_vertices.size(); i++)
+		{
+			MeshVertex vertex = m_vertices[i];
+			min = glm::min(min, vertex.Position);
+			max = glm::max(max, vertex.Position);
+		}
+
+		m_size = (max - min) / 2.0f;
 	}
 
 	void Mesh::UpdateMeshData(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, bool recomputeNormals)
@@ -108,8 +126,17 @@ namespace Verlet
 		if (m_indices.size() == 0)
 			return;
 
-		// bool isDoubleSided = (m_modifiers & MESH_MODIFIER_DOUBLE_SIDED) != 0;
-		bool isWireframe = (m_modifiers & MESH_MODIFIER_WIREFRAME) != 0;
+		bool isDoubleSided = (m_flags & MESH_FLAG_DOUBLE_SIDED) != 0;
+		bool isWireframe = (m_flags & MESH_FLAG_WIREFRAME) != 0;
+
+		if (isDoubleSided)
+			glDisable(GL_CULL_FACE);
+		else
+		{
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+			glFrontFace(GL_CCW);
+		}
 
 		// Draw Mesh
 		glPolygonMode(

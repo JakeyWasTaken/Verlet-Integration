@@ -97,7 +97,7 @@ namespace Verlet
 
 		Material* material = new Material(textures, model->GetShader());
 
-		return new Mesh(vertices, indices, material, model->IsStatic());
+		return new Mesh(vertices, indices, material, model->IsStatic(), model->GetMeshFlags());
 	}
 
 	std::vector<Texture*> ModelLoader::LoadMaterialTextures(aiMaterial* material, aiTextureType type, TextureType texType, Model* model)

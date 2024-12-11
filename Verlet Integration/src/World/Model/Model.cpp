@@ -1,12 +1,14 @@
 #include "Model.h"
 #include "World/Model/Loader/ModelLoader.h"
+#include "Rendering/Debug/DebugDraw.h"
 
 namespace Verlet
 {
-	Model::Model(const char* filePath, Shader* pShader, bool isStatic)
+	Model::Model(const char* filePath, Shader* pShader, bool isStatic, uint32_t meshFlags)
 	{
 		m_shader = pShader;
 		m_isStatic = isStatic;
+		m_meshFlags = meshFlags;
 
 		ModelLoader::LoadFileIntoModel(filePath, this);
 	}

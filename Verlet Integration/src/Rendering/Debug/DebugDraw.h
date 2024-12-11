@@ -18,7 +18,7 @@ namespace Verlet
 
 		extern std::vector<MeshVertex> vertices;
 		extern std::vector<uint32_t> indices;
-
+		
 		// TODO work out implementation specifics of this
 		extern bool enabled;
 

@@ -3,6 +3,7 @@
 #include "Core/Time.h"
 #include "Rendering/Debug/DebugDraw.h"
 #include "World/Lighting/Lighting.h"
+#include "Rendering/Debug/DebugImGui.h"
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "glad/glad.h"
@@ -26,6 +27,7 @@ namespace Verlet
 		
 		// This must get initialized after the window since the window sets-up our context
 		grDebugDraw::Init();
+		dbgImGui::Init(m_window);
 
 		m_ready = true;
 	}
@@ -52,6 +54,7 @@ namespace Verlet
 			Time::DeltaTime = deltaTime;
 			Time::Frame += 1;
 
+			glfwPollEvents();
 			ProcessInput();
 
 			PreRender();
@@ -59,10 +62,12 @@ namespace Verlet
 			PostRender();
 
 			glfwSwapBuffers(glfwWindow);
-			glfwPollEvents();
 		}
 
+		dbgImGui::Cleanup();
+
 		// After finishing running terminate glfw
+		glfwDestroyWindow(glfwWindow);
 		glfwTerminate();
 	}
 	
@@ -79,12 +84,17 @@ namespace Verlet
 		glEnable(GL_DEPTH_TEST);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		dbgImGui::PreRender();
 	}
 
 	void Engine::Render()
 	{
 		m_scene->Draw(m_camera);
 		grDebugDraw::Draw(m_camera);
+
+		ImGui::ShowDemoWindow();
+		dbgImGui::Render();
 	}
 
 	void Engine::PostRender()

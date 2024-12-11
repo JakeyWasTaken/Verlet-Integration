@@ -58,19 +58,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(ProjectDir)src;$(IncludePath);$(ProjectDir)src\Vendor\imgui</IncludePath>
     <LibraryPath>$(SolutionDir)lib\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include;$(ProjectDir)src;$(ProjectDir)src\Vendor\imgui;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)lib\Release</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include;$(ProjectDir)src;$(ProjectDir)src\Vendor\imgui;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)lib\Release</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -86,6 +86,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>set /p BUILDCOUNT=&lt;src/build.agf	
+set /a BUILDCOUNT+=1
+echo %BUILDCOUNT% &gt; src/build.agf
+echo #define BUILD_COUNT %BUILDCOUNT% &gt;src/build.h
+echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -104,6 +111,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>set /p BUILDCOUNT=&lt;src/build.agf	
+set /a BUILDCOUNT+=1
+echo %BUILDCOUNT% &gt; src/build.agf
+echo #define BUILD_COUNT %BUILDCOUNT% &gt;src/build.h
+echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <ClCompile>
@@ -122,8 +136,23 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>set /p BUILDCOUNT=&lt;src/build.agf	
+set /a BUILDCOUNT+=1
+echo %BUILDCOUNT% &gt; src/build.agf
+echo #define BUILD_COUNT %BUILDCOUNT% &gt;src/build.h
+echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Rendering\Debug\DebugImGui.cpp" />
+    <ClCompile Include="src\Vendor\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\Vendor\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Vendor\imgui\imgui.cpp" />
+    <ClCompile Include="src\Vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\Vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\Vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="src\World\Lighting\Lighting.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
@@ -148,6 +177,16 @@
     <ClCompile Include="src\Rendering\Material\Texture\TextureConstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\build.h" />
+    <ClInclude Include="src\Rendering\Debug\DebugImGui.h" />
+    <ClInclude Include="src\Vendor\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Vendor\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Vendor\imgui\imconfig.h" />
+    <ClInclude Include="src\Vendor\imgui\imgui.h" />
+    <ClInclude Include="src\Vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="src\Vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\Vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\Vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Physics\PhysicsSystem.h" />
     <ClInclude Include="src\World\Lighting\Lighting.h" />
     <ClInclude Include="src\Engine\Engine.h" />

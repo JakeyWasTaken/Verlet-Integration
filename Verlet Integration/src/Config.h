@@ -2,6 +2,7 @@
 // this probably isnt great practice since one change takes forever to re-compile but whatever
 #pragma once
 #include <GLFW/glfw3.h>
+#include "build.h"
 
 // OpenGL Definitions
 #define CONF_GL_VERSION_MAJOR 3
@@ -14,12 +15,14 @@
 #define CONF_WINDOW_TITLE "Verlet Integration"
 
 // Application Definitions
-#define CONF_RESOURCE_LOCATION "../Verlet Integration/res"
+#define CONF_RESOURCE_LOCATION RES_DIR
 #define CONF_MAX_CHAR_SIZE 512
 #if VT_DEBUG
 	#define CONF_BUILD_TYPE "Debug"
-#else // VT_RELEASE
+#elif VT_RELEASE
 	#define CONF_BUILD_TYPE "Release"
+#elif VT_DIST
+	#define CONF_BUILD_TYPE "Distribution"
 #endif // VT_DEBUG
 
 // Camera Definitions

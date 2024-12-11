@@ -100,23 +100,21 @@ namespace Verlet
 		return m_bufferedViewMatrix;
 	}
 
-	glm::mat4 Camera::GetCameraMatrix()
+	glm::mat4 Camera::GetProjectionMatrix()
 	{
-		if (m_lastCameraMatrixFrame == Time::Frame)
-			return m_bufferedCameraMatrix;
+		if (m_lastProjMatrixFrame == Time::Frame)
+			return m_bufferedProjMatrix;
 
 		Window* window = CurrentWindow;
 
 		float aspect = (float)window->GetWidth() / (float)window->GetHeight();
 
 		if (aspect != aspect) // prevent assertion when minimized (checks if NaN)
-		{
 			return glm::mat4(1.0f);
-		}
 
-		m_bufferedCameraMatrix = glm::perspective(glm::radians(m_FOV), aspect, CONF_CAMERA_NEAR_PLANE, CONF_CAMERA_FAR_PLANE);
-		m_lastCameraMatrixFrame = Time::Frame;
+		m_bufferedProjMatrix = glm::perspective(glm::radians(m_FOV), aspect, CONF_CAMERA_NEAR_PLANE, CONF_CAMERA_FAR_PLANE);
+		m_lastProjMatrixFrame = Time::Frame;
 
-		return m_bufferedCameraMatrix;
+		return m_bufferedProjMatrix;
 	}
 }

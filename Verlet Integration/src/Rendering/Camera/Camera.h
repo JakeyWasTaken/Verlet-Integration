@@ -25,7 +25,7 @@ namespace Verlet
 		void ProcessMouse();
 
 		glm::mat4 GetViewMatrix();
-		glm::mat4 GetCameraMatrix();
+		glm::mat4 GetProjectionMatrix();
 	private:
 		float m_speed = CONF_CAMERA_SPEED;
 
@@ -40,10 +40,10 @@ namespace Verlet
 		bool m_mouseLocked = false;
 
 		uint32_t m_lastViewMatrixFrame = -1;
-		uint32_t m_lastCameraMatrixFrame = -1;
+		uint32_t m_lastProjMatrixFrame = -1;
 
 		glm::mat4 m_bufferedViewMatrix;
-		glm::mat4 m_bufferedCameraMatrix;
+		glm::mat4 m_bufferedProjMatrix;
 
 		glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 10.0f);
 		glm::vec3 m_direction = glm::normalize(m_position - glm::vec3(0.0f, 0.0f, 0.0f));

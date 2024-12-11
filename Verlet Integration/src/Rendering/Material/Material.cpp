@@ -43,6 +43,7 @@ namespace Verlet
 		//m_shader->SetVec3("lightColor", LightColor);
 
 		m_shader->SetMat4("projection", camera->GetCameraMatrix());
+		m_shader->SetMat4("projection", camera->GetProjectionMatrix());
 		m_shader->SetMat4("view", camera->GetViewMatrix());
 	}
 }

@@ -23,8 +23,7 @@ namespace Verlet
 		extern bool enabled;
 
 		extern void Init();
-		// Call at the start of the frame
-		extern void Update();
+		extern void ClearDrawList();
 		extern void Draw(Camera* camera);
 
 		// Drawing Methods

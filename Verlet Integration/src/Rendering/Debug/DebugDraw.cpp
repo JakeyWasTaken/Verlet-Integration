@@ -26,10 +26,10 @@ namespace Verlet
 
 		pShader = new Shader(CONF_DEBUG_VERT_SHADER, CONF_DEBUG_FRAG_SHADER);
 		pMaterial = new Material(textures, pShader);
-		pMeshDrawer = new Mesh(vertices, indices, pMaterial, false, MESH_MODIFIER_WIREFRAME);
+		pMeshDrawer = new Mesh(vertices, indices, pMaterial, false, MESH_FLAG_WIREFRAME);
 	}
 
-	void grDebugDraw::Update()
+	void grDebugDraw::ClearDrawList()
 	{
 		vertices.clear();
 		indices.clear();

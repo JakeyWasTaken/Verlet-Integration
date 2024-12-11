@@ -9,9 +9,11 @@
 | aTexCoords | vec2 | 3        | Vertex TexCoords |
 
 ### Uniforms
-|    Name    | Type |    Description    |
-| ---------- | ---- | ----------------- |
-| model      | mat4 | Model Matrix      |
-| view       | mat4 | View Matrix	    |
-| projection | mat4 | Projection Matrix |
-| color      | vec3 | Object Color      |
+|     Name    | Type |     Description     |
+| ----------- | ---- | ------------------- |
+| model       | mat4 | Model Matrix        |
+| view        | mat4 | View Matrix	       |
+| projection  | mat4 | Projection Matrix   |
+| color       | vec3 | Object Color        |
+| ambient     | vec3 | Ambient World Color |
+| sunPosition | vec3 | Sun World Position  |

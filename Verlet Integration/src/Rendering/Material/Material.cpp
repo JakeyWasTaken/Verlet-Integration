@@ -1,12 +1,9 @@
 #include "Material.h"
 #include "Core/Log.h"
 #include "Core/Time.h"
+#include "World/Lighting/Lighting.h"
 #include "glad/glad.h"
 #include <string>
-// remove this when model stuff is remvoed
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/euler_angles.hpp>
 
 namespace Verlet
 {
@@ -38,11 +35,10 @@ namespace Verlet
 
 		m_shader->UseShader();
 
-		//m_shader->SetVec3("lightPosition", LightPosition);
+		m_shader->SetVec3("ambient", Lighting::AmbientColor);
+		m_shader->SetVec3("sunPosition", Lighting::SunPosition);
 		m_shader->SetVec3("cameraPosition", camera->GetPosition());
-		//m_shader->SetVec3("lightColor", LightColor);
 
-		m_shader->SetMat4("projection", camera->GetCameraMatrix());
 		m_shader->SetMat4("projection", camera->GetProjectionMatrix());
 		m_shader->SetMat4("view", camera->GetViewMatrix());
 	}

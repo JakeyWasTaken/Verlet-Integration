@@ -53,6 +53,7 @@ namespace Verlet
 		if (wasActive)
 			UseShader();
 	}
+
 	void Shader::UseShader()
 	{
 		ActiveShaderProg = m_progId;

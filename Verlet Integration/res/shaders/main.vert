@@ -7,18 +7,18 @@ layout (location = 3) in vec2 aTexCoords;
 out vec2 TexCoords;
 out vec3 FragPosition;
 out vec3 VertColor;
+out vec3 Normal;
 out vec3 Color;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform vec3 color;
 
 void main()
 {
     TexCoords = aTexCoords;
     VertColor = aVertColor;
-    Color = color;
+    Normal = aNormal;
 
     FragPosition = vec3(model * vec4(aPos, 1.0));
     gl_Position = projection * view * model * vec4(aPos, 1.0);

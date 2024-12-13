@@ -4,9 +4,10 @@
 #include "Rendering/Material/Material.h"
 #include "Rendering/Camera/Camera.h"
 #include "glm/glm.hpp"
+#include "Core/Vector.h"
 #include <vector>
 
-#define VEC3_ONE glm::vec3(1.0f)
+#define COLOR_RGB(R, G, B) glm::vec3((float)R##/255.0f, (float)G##/255.0F, (float)B##/255.0f)
 
 namespace Verlet
 {
@@ -39,9 +40,15 @@ namespace Verlet
 		extern void Circle(glm::mat4 transform, float radius, uint32_t subdivisions, glm::vec3 color = VEC3_ONE);
 	
 		extern void Sphere(glm::mat4 transform, float radius, uint32_t subdivisions, glm::vec3 color = VEC3_ONE);
+		extern void Sphere(glm::vec3 position, float radius, uint32_t subdivisions, glm::vec3 color = VEC3_ONE);
 
 		extern void Plane(glm::mat4 transform, glm::vec2 size, glm::vec3 color = VEC3_ONE);
 
 		extern void Box(glm::mat4 transform, glm::vec3 size, glm::vec3 color = VEC3_ONE);
+
+		// transform is the tip of the cone
+		extern void Cone(glm::mat4 transform, float radius, float length, uint32_t subdivisions, glm::vec3 color = VEC3_ONE);
+	
+		extern void Arrow(glm::vec3 p0, glm::vec3 p1, float radius, float length, uint32_t subdivisions, glm::vec3 color = VEC3_ONE);
 	};
 }

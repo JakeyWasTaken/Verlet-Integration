@@ -18,7 +18,7 @@ namespace Verlet
 		ImGui_ImplOpenGL3_Init();
 	}
 
-	void dbgImGui::PreRender()
+	void dbgImGui::Prepare()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();

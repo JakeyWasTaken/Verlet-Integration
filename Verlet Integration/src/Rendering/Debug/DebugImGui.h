@@ -12,7 +12,7 @@ namespace Verlet
 	public:
 		static void Init(Window* window);
 
-		static void PreRender();
+		static void Prepare();
 		static void Render();
 
 		static void Cleanup();

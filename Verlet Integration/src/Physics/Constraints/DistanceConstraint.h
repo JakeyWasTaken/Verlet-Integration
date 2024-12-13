@@ -1,7 +1,5 @@
 #pragma once
 #include "Constraint.h"
-#include "Physics/Point.h"
-#include "glm/glm.hpp"
 
 namespace Verlet
 {

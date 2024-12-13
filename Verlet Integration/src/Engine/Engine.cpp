@@ -7,10 +7,11 @@
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "glad/glad.h"
+#include <thread>
 
 #include "Physics/Constraints/DistanceConstraint.h"
 
-#define DISTANCE_CONSTRAINT(p0, p1) m_physicsSystem->AddConstraint(new Verlet::Physics::DistanceConstraint(p0, p1, 1.f))
+#define DISTANCE_CONSTRAINT(p0, p1) m_physicsSystem->AddConstraint(new Verlet::Physics::DistanceConstraint(p0, p1, 0.0000001f))
 
 namespace Verlet
 {
@@ -30,7 +31,7 @@ namespace Verlet
 		m_scene = new Scene();
 		m_physicsSystem = new Physics::System();
 
-		const uint32_t size = 10;
+		const uint32_t size = 100;
 		const float pointSpacing = 0.25f;
 		Physics::Point* points[size][size] = {};
 
@@ -39,7 +40,7 @@ namespace Verlet
 		{
 			for (uint32_t j = 0; j < size; j++)
 			{
-				Physics::Point* point = new Physics::Point(positionStart + glm::vec3(i, j, 0) * pointSpacing, 1.0f);
+				Physics::Point* point = new Physics::Point(positionStart + glm::vec3(i, j, 0) * pointSpacing, 5.0f);
 				points[i][j] = point;
 
 				if (j == 0)
@@ -89,6 +90,7 @@ namespace Verlet
 
 		GLFWwindow* glfwWindow = m_window->GetGLFWWindow();
 
+		// glfwWindowShouldClose(glfwWindow)
 		while (!glfwWindowShouldClose(glfwWindow) && !m_close)
 		{
 			// Set our time, delta time and increment our frame counter
@@ -100,9 +102,10 @@ namespace Verlet
 			Time::DeltaTime = deltaTime;
 			Time::Frame += 1;
 
-			glfwPollEvents();
-			ProcessInput();
+			//std::thread eventsThread(&Engine::PollEvents, this);
+			PollEvents();
 
+			ProcessInput();
 
 			FrameStart();
 			PhysicsStep();
@@ -110,6 +113,8 @@ namespace Verlet
 			Render();
 			PostRender();
 			FrameEnd();
+
+			//eventsThread.join();
 
 			glfwSwapBuffers(glfwWindow);
 		}
@@ -121,6 +126,12 @@ namespace Verlet
 		glfwTerminate();
 	}
 	
+	void Engine::PollEvents()
+	{
+		glfwPollEvents();
+		//glfwWaitEvents();
+	}
+
 	void Engine::ProcessInput()
 	{
 		m_window->InputStep();
@@ -135,7 +146,8 @@ namespace Verlet
 
 	void Engine::PhysicsStep()
 	{
-		m_physicsSystem->Update(Time::DeltaTime);
+		if (m_physicsSystem->ReadyToUpdate())
+			m_physicsSystem->Update(m_physicsSystem->updateRate);
 	}
 
 	void Engine::PreRender()

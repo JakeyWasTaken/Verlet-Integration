@@ -1,7 +1,7 @@
 // Vector constants
 
 #pragma once
-#include "glm/vec3.hpp"
+#include "glm/glm.hpp"
 
 #define VEC3_X glm::vec3(1.0f, 0.0f, 0.0f)
 #define VEC3_Y glm::vec3(0.0f, 1.0f, 0.0f)
@@ -13,3 +13,5 @@
 
 #define VEC3_ONE glm::vec3(1.0f, 1.0f, 1.0f)
 #define VEC3_ZERO glm::vec3(0.0f, 0.0f, 0.0f)
+
+extern glm::vec3 SafeNormalize(glm::vec3 vector);

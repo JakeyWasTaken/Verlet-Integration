@@ -3,14 +3,6 @@
 #include "Core/Random.h"
 #include "Core/Vector.h"
 
-glm::vec3 SafeNormalize(glm::vec3 vector)
-{
-	if (glm::length(vector) == 0)
-		return VEC3_ZERO;
-	
-	return glm::normalize(vector);
-}
-
 namespace Verlet
 {
 	namespace Physics
@@ -19,6 +11,8 @@ namespace Verlet
 		{
 			if (isSimulationPaused)
 				return;
+
+			m_lastUpdate = Time::Time;
 
 			float scaledDeltaTime = deltaTime / simulationSubsteps;
 
@@ -44,7 +38,8 @@ namespace Verlet
 					Point* point = m_points[i];
 					//glm::vec3 travelDirection = SafeNormalize(point->GetPosition() - point->GetLastPosition());
 					//point->SetVelocity(travelDirection * glm::dot(travelDirection, point->GetVelocity()));
-					point->SetVelocity(((point->GetPosition() - point->GetLastPosition()) / scaledDeltaTime) * (1.0f - (0.001f * scaledDeltaTime)));
+					float gain = (1.0f - (0.005f * scaledDeltaTime));
+					point->SetVelocity(((point->GetPosition() - point->GetLastPosition()) / scaledDeltaTime) * gain);
 				
 					//point->SetVelocity(point->GetPosition() - point->GetLastPosition());
 				}
@@ -53,11 +48,13 @@ namespace Verlet
 
 		void System::DrawWidgets()
 		{
+			static float compliance = 0.001f;
 			bool doImpulse = false;
 
 			ImGui::SetNextWindowSize(ImVec2(500.0f, 500.0f), ImGuiCond_FirstUseEver);
 			ImGui::Begin("Physics System");
 			ImGui::SliderFloat("Gravity", &simulationGravity, -25, 25);
+			ImGui::SliderFloat("Compliance", &compliance, 0.00000001f, 0.1f, "%.10f");
 			if (ImGui::Button("Apply Impulse"))
 				doImpulse = true;
 
@@ -77,6 +74,12 @@ namespace Verlet
 
 					point->Impulse(glm::vec3(x, y, z));
 				}
+			}
+		
+			for (uint32_t i = 0; i < m_constraints.size(); i++)
+			{
+				Constraint* constraint = m_constraints[i];
+				constraint->compliance = compliance;
 			}
 		}
 	}

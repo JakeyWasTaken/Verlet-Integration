@@ -22,6 +22,9 @@ namespace Verlet
 
 		inline Scene* GetScene() { return m_scene; };
 
+		// Threaded functions
+		void PollEvents();
+
 		// Functions that are called each resumption cycle
 		void ProcessInput();
 

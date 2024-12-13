@@ -145,6 +145,7 @@ echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Vector.cpp" />
     <ClCompile Include="src\Physics\Constraints\DistanceConstraint.cpp" />
     <ClCompile Include="src\Physics\Constraints\Constraint.cpp" />
     <ClCompile Include="src\Core\Random.cpp" />

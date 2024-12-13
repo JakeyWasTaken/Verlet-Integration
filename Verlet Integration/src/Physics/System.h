@@ -12,6 +12,7 @@
 #include "Constraints/Constraint.h"
 #include "glm/glm.hpp"
 #include "stdint.h"
+#include "Core/Time.h"
 #include <vector>
 
 namespace Verlet
@@ -21,12 +22,15 @@ namespace Verlet
 		class System
 		{
 		public:
-			uint32_t simulationSubsteps = 8;
+			uint32_t simulationSubsteps = 20;
 			float simulationGravity = 9.8;
+			float updateRate = 1.0f / 120.0f;
 			bool isSimulationPaused = false;
 			
 			void Update(float deltaTime);
 			void DrawWidgets();
+
+			inline bool ReadyToUpdate() { return Time::Time - m_lastUpdate >= updateRate; };
 
 			inline void AddPoint(Point* point) { m_points.push_back(point); };
 			inline void AddConstraint(Constraint* constraint) { m_constraints.push_back(constraint); };
@@ -34,6 +38,8 @@ namespace Verlet
 		private:
 			std::vector<Point*> m_points;
 			std::vector<Constraint*> m_constraints;
+
+			float m_lastUpdate = 0.0f;
 		};
 	}
 }

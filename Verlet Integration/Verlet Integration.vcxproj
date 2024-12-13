@@ -145,6 +145,10 @@ echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Physics\Constraints\DistanceConstraint.cpp" />
+    <ClCompile Include="src\Physics\Constraints\Constraint.cpp" />
+    <ClCompile Include="src\Core\Random.cpp" />
+    <ClCompile Include="src\Physics\Point.cpp" />
     <ClCompile Include="src\Rendering\Debug\DebugImGui.cpp" />
     <ClCompile Include="src\Vendor\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Vendor\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -153,7 +157,7 @@ echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
     <ClCompile Include="src\Vendor\imgui\imgui_draw.cpp" />
     <ClCompile Include="src\Vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Physics\PhysicsSystem.cpp" />
+    <ClCompile Include="src\Physics\System.cpp" />
     <ClCompile Include="src\World\Lighting\Lighting.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\World\Scene\Scene.cpp" />
@@ -177,6 +181,11 @@ echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
     <ClCompile Include="src\Rendering\Material\Texture\TextureConstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Physics\Constraints\DistanceConstraint.h" />
+    <ClInclude Include="src\Physics\Constraints\Constraint.h" />
+    <ClInclude Include="src\Core\Random.h" />
+    <ClInclude Include="src\Core\Vector.h" />
+    <ClInclude Include="src\Physics\Point.h" />
     <ClInclude Include="src\build.h" />
     <ClInclude Include="src\Rendering\Debug\DebugImGui.h" />
     <ClInclude Include="src\Vendor\imgui\backends\imgui_impl_glfw.h" />
@@ -187,7 +196,7 @@ echo #define RES_DIR R"($(ProjectDir)res)" &gt;&gt; src/build.h</Command>
     <ClInclude Include="src\Vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="src\Vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="src\Vendor\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\Physics\PhysicsSystem.h" />
+    <ClInclude Include="src\Physics\System.h" />
     <ClInclude Include="src\World\Lighting\Lighting.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\World\Scene\Scene.h" />

@@ -42,7 +42,7 @@ void main()
     float diff = dot(Normal, DirectionToSun) * 0.5 + 0.5; // max(dot(Normal, DirectionToSun), 0.25)
     vec4 shaded = vec4(diff, diff, diff, 1.0);
 
-    vec4 fragColor = rawDiffuse * fog * (vec4(vec3(1.0, 1.0, 1.0) + ambient, 1.0) * shaded);
+    vec4 fragColor = (rawDiffuse * (vec4(vec3(1.0, 1.0, 1.0) + ambient, 1.0) * shaded)) * fog;
     fragColor = clamp(fragColor, vec4(0.0, 0.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 1.0));
 
     FragColor = fragColor;

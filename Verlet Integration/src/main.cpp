@@ -31,17 +31,10 @@ int main()
 	flag->position = glm::vec3(0, 5, 0);
 
 	engine->GetScene()->PushObject(floor);
-	engine->GetScene()->PushObject(box);
+	//engine->GetScene()->PushObject(box);
 	engine->GetScene()->PushObject(flag);
 
 	engine->Run();
-
-		/*Verlet::grDebugDraw::Line(glm::vec3(0.0f), glm::vec3(5.0f) * (float)sin(now * 0.5), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		Verlet::grDebugDraw::Sphere(glm::mat4(1.0f) * glm::eulerAngleXYZ((float)glm::radians(now * 15), (float)-glm::radians(now * 15), 0.0f), 1, 20);
-		Verlet::grDebugDraw::Box(glm::mat4(1.0f), glm::vec3(1.0f) * 1.25f, glm::vec3(0, 1, 0));
-		Verlet::grDebugDraw::Draw(camera);
-		Verlet::grDebugDraw::ClearDrawList();*/
-
 	
 	return 0;
 }

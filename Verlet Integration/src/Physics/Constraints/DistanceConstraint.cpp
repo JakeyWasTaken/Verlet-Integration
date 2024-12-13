@@ -15,7 +15,6 @@ namespace Verlet
 				return;
 
 			glm::vec3 pointDifference = m_point1->GetPosition() - m_point0->GetPosition();
-			glm::vec3 direction = SafeNormalize(m_point1->GetPosition() - m_point0->GetPosition());
 			float distance = glm::length(pointDifference);
 			float constraint = distance - restLength;
 

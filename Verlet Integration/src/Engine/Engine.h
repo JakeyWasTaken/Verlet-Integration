@@ -2,6 +2,7 @@
 #include "Core/Window.h"
 #include "Rendering/Camera/Camera.h"
 #include "World/Scene/Scene.h"
+#include "Physics/System.h"
 
 namespace Verlet
 {
@@ -24,9 +25,12 @@ namespace Verlet
 		// Functions that are called each resumption cycle
 		void ProcessInput();
 
+		void FrameStart();
+		void PhysicsStep();
 		void PreRender();
 		void Render();
 		void PostRender();
+		void FrameEnd();
 
 	private:
 		bool m_ready = false;
@@ -37,6 +41,7 @@ namespace Verlet
 		Window* m_window = nullptr;
 		Camera* m_camera = nullptr;
 		Scene* m_scene = nullptr;
+		Physics::System* m_physicsSystem = nullptr;
 	};
 
 	extern Verlet::Engine* CurrentEngine;

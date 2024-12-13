@@ -1,9 +1,7 @@
-#include "PhysicsSystem.h"
+#include "Constraint.h"
 
 namespace Verlet
 {
 	namespace Physics
-	{
-		
-	}
+	{ }
 }

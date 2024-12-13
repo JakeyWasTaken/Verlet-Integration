@@ -39,7 +39,7 @@ namespace Verlet
 
 	void Camera::ProcessKeyboard()
 	{
-		float scaledSpeed = m_speed * Time::DeltaTime;
+		float scaledSpeed = m_speed * Time::DeltaTime * (GET_KEY_STATE(GLFW_KEY_LEFT_SHIFT) == KEY_PRESS ? 10 : 1);
 
 		if (GET_KEY_STATE(GLFW_KEY_W) == KEY_PRESS)
 			m_position += m_direction * scaledSpeed;

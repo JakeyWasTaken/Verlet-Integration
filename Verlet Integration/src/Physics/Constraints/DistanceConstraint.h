@@ -10,7 +10,7 @@ namespace Verlet
 		public:
 			float restLength;
 
-			DistanceConstraint(Point* point0, Point* point1, float compliance = 0.0f) :
+			DistanceConstraint(phPoint* point0, phPoint* point1, float compliance = 0.0f) :
 				m_point0(point0),
 				m_point1(point1),
 				Constraint(compliance),
@@ -20,11 +20,11 @@ namespace Verlet
 
 			void Solve(float deltaTime);
 
-			inline Point* GetPoint0() { return m_point0; };
-			inline Point* GetPoint1() { return m_point1; };
+			inline phPoint* GetPoint0() { return m_point0; };
+			inline phPoint* GetPoint1() { return m_point1; };
 		private:
-			Point* m_point0 = nullptr;
-			Point* m_point1 = nullptr;
+			phPoint* m_point0 = nullptr;
+			phPoint* m_point1 = nullptr;
 		};
 	}
 }

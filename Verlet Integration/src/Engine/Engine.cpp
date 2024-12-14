@@ -7,11 +7,14 @@
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "glad/glad.h"
-#include <thread>
 
-#include "Physics/Constraints/DistanceConstraint.h"
+#define DISTANCE_CONSTRAINT(p0, p1) cloth->AddConstraint(new Verlet::Physics::DistanceConstraint(p0, p1, 0.0001f))
 
-#define DISTANCE_CONSTRAINT(p0, p1) m_physicsSystem->AddConstraint(new Verlet::Physics::DistanceConstraint(p0, p1, 0.0000001f))
+void ImGuiRightAlignText(const char* text)
+{
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text).x
+		- ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+}
 
 namespace Verlet
 {
@@ -29,24 +32,28 @@ namespace Verlet
 		m_window = new Window();
 		m_camera = new Camera(glm::vec3(0.0f));
 		m_scene = new Scene();
-		m_physicsSystem = new Physics::System();
+		m_physicsSystem = new Physics::phSystem();
+
+		// TEMPORARY START
+
+		Physics::phObject* cloth = new Physics::phObject();
 
 		const uint32_t size = 100;
 		const float pointSpacing = 0.25f;
-		Physics::Point* points[size][size] = {};
+		Physics::phPoint* points[size][size] = {};
 
 		glm::vec3 positionStart = glm::vec3(0.0f, 25.0f, 0.0f);
 		for (uint32_t i = 0; i < size; i++)
 		{
 			for (uint32_t j = 0; j < size; j++)
 			{
-				Physics::Point* point = new Physics::Point(positionStart + glm::vec3(i, j, 0) * pointSpacing, 5.0f);
+				Physics::phPoint* point = new Physics::phPoint(positionStart + glm::vec3(i, j, 0) * pointSpacing, 5.0f);
 				points[i][j] = point;
 
 				if (j == 0)
 					point->SetMass(0.0f);
 
-				m_physicsSystem->AddPoint(point);
+				cloth->AddPoint(point);
 
 				// Point to the left
 				if (i > 0)
@@ -62,6 +69,8 @@ namespace Verlet
 			}
 		}
 
+		m_physicsSystem->AddObject(cloth);
+
 		/*Physics::Point* frozenPoint = new Physics::Point(glm::vec3(0.0f, 10.0f, 0.0f), 0.0f);
 		Physics::Point* p = new Physics::Point(glm::vec3(0.0f, 5.0f, 0.0f), 1.5f);
 
@@ -71,12 +80,19 @@ namespace Verlet
 		Physics::DistanceConstraint* c = new Physics::DistanceConstraint(p, frozenPoint);
 		c->compliance = 0.0001f;
 		m_physicsSystem->AddConstraint(c);*/
+
+		// TEMPORARY END
 		
 		// This must get initialized after the window since the window sets-up our context
 		grDebugDraw::Init();
 		dbgImGui::Init(m_window);
 
 		m_ready = true;
+
+		// Start threads
+		m_physicsThread = std::thread(&Engine::PhysicsRun, this);
+
+		m_physicsThread.detach();
 	}
 
 	void Engine::Run()
@@ -102,22 +118,22 @@ namespace Verlet
 			Time::DeltaTime = deltaTime;
 			Time::Frame += 1;
 
-			//std::thread eventsThread(&Engine::PollEvents, this);
 			PollEvents();
 
 			ProcessInput();
 
 			FrameStart();
-			PhysicsStep();
+			//PhysicsStep();
 			PreRender();
 			Render();
 			PostRender();
 			FrameEnd();
 
-			//eventsThread.join();
-
 			glfwSwapBuffers(glfwWindow);
 		}
+
+		// Setting this will terminate the physics thread
+		m_close = true;
 
 		dbgImGui::Cleanup();
 
@@ -144,10 +160,43 @@ namespace Verlet
 		dbgImGui::Prepare();
 	}
 
-	void Engine::PhysicsStep()
+#if DEBUG_FEATURES
+	void Engine::DrawWidgets()
 	{
-		if (m_physicsSystem->ReadyToUpdate())
-			m_physicsSystem->Update(m_physicsSystem->updateRate);
+		if (ImGui::BeginMainMenuBar())
+		{
+			const char* RightInfoFormat = "Verlet Integration (Build: %s / %i) (Framerate: %.3f ms (%.2f fps) )";
+			char RightInfo[512];
+			sprintf_s(RightInfo, RightInfoFormat, CONF_BUILD_TYPE, BUILD_COUNT, Time::DeltaTime, 1 / Time::DeltaTime);
+
+			ImGuiRightAlignText(RightInfo);
+			ImGui::Text(RightInfo);
+
+			ImGui::EndMainMenuBar();
+		}
+	}
+#endif
+
+	void Engine::PhysicsRun()
+	{
+		static double lastTime = glfwGetTime();
+
+		while (!m_close)
+		{
+			double time = glfwGetTime();
+			double delta = time - lastTime;
+
+			m_physicsSystem->IncrementAccumulator(delta);
+
+			while (m_physicsSystem->ReadyToUpdate())
+			{
+				m_physicsSystem->IncrementAccumulator(-m_physicsSystem->settings.updateRate);
+				m_physicsSystem->Update();
+			}
+		}
+
+		// Terminate this thread
+		std::terminate();
 	}
 
 	void Engine::PreRender()
@@ -161,9 +210,16 @@ namespace Verlet
 	void Engine::Render()
 	{
 		m_scene->Draw(m_camera);
-		m_physicsSystem->DrawWidgets();
+#if DEBUG_FEATURES
+		DrawWidgets();
+		m_physicsSystem->DrawDebug();
+#endif
 
 		grDebugDraw::Draw(m_camera);
+
+#if SHOW_DEARIMGUI_DEMO
+		ImGui::ShowDemoWindow();
+#endif
 		dbgImGui::Render();
 	}
 

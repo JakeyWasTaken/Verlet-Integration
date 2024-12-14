@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include "build.h"
 
+#define SHOW_DEARIMGUI_DEMO 0
+
 // OpenGL Definitions
 #define CONF_GL_VERSION_MAJOR 3
 #define CONF_GL_VERSION_MINOR 3
@@ -35,3 +37,4 @@
 // Debug Definitions
 #define CONF_DEBUG_VERT_SHADER "res:/shaders/debug/debug.vert"
 #define CONF_DEBUG_FRAG_SHADER "res:/shaders/debug/debug.frag"
+#define DEBUG_FEATURES VT_DEBUG || VT_RELEASE

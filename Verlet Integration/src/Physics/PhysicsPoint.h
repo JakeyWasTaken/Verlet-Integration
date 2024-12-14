@@ -1,14 +1,20 @@
 #pragma once
 #include "glm/vec3.hpp"
+#include "Core/Vector.h"
 
 namespace Verlet
 {
 	namespace Physics
 	{
-		class Point
+		class phPoint
 		{
 		public:
-			Point(glm::vec3 position, float mass = 0.0f);
+			phPoint(glm::vec3 position, float mass = 0.0f) :
+				m_position(position),
+				m_lastPosition(position),
+				m_velocity(VEC3_ZERO) {
+					SetMass(mass);
+				}
 
 			void Update(glm::vec3 acceleration, float deltaTime);
 			void Impulse(glm::vec3 velocity);

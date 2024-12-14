@@ -2,7 +2,10 @@
 #include "Core/Window.h"
 #include "Rendering/Camera/Camera.h"
 #include "World/Scene/Scene.h"
-#include "Physics/System.h"
+#include "Physics/Include.h"
+#include "Config.h"
+
+#include <thread>
 
 namespace Verlet
 {
@@ -22,14 +25,18 @@ namespace Verlet
 
 		inline Scene* GetScene() { return m_scene; };
 
+#if DEBUG_FEATURES
+		void DrawWidgets();
+#endif
+
 		// Threaded functions
-		void PollEvents();
+		void PhysicsRun();
 
 		// Functions that are called each resumption cycle
 		void ProcessInput();
+		void PollEvents();
 
 		void FrameStart();
-		void PhysicsStep();
 		void PreRender();
 		void Render();
 		void PostRender();
@@ -39,12 +46,14 @@ namespace Verlet
 		bool m_ready = false;
 		bool m_close = false;
 
-		double m_lastTime = 0;
+		double m_lastTime = 0.0f;
 
 		Window* m_window = nullptr;
 		Camera* m_camera = nullptr;
 		Scene* m_scene = nullptr;
-		Physics::System* m_physicsSystem = nullptr;
+		Physics::phSystem* m_physicsSystem = nullptr;
+
+		std::thread m_physicsThread;
 	};
 
 	extern Verlet::Engine* CurrentEngine;
